@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>18+ Content Hub</title>
+  <meta name="description" content="18+ content website. Adults only.">
+  <meta name="robots" content="noindex">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0f;
+      color: #fff;
+    }
+
+    /* AGE POPUP */
+    .age-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.94);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .age-box {
+      width: 100%;
+      max-width: 420px;
+      background: #18181c;
+      border-radius: 18px;
+      padding: 35px 25px;
+      text-align: center;
+      border: 1px solid #333;
+      box-shadow: 0 20px 80px rgba(0,0,0,.7);
+    }
+
+    .age-icon {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    .age-box h2 {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .age-box p {
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .age-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .age-buttons button {
+      flex: 1;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .enter-btn {
+      background: #e91e63;
+      color: white;
+    }
+
+    .leave-btn {
+      background: #333;
+      color: #ddd;
+    }
+
+    /* HEADER */
+    header {
+      background: #151518;
+      border-bottom: 1px solid #29292e;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: bold;
+      color: #ff3d7f;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: #ff3d7f;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 1200px;
+      margin: auto;
+      padding: 55px 20px 35px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      color: #ff3d7f;
+    }
+
+    .hero p {
+      color: #999;
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
+    /* SEARCH */
+    .search-area {
+      max-width: 700px;
+      margin: 25px auto;
+      padding: 0 20px;
+    }
+
+    .search {
+      width: 100%;
+      background: #19191d;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .search:focus {
+      border-color: #ff3d7f;
+    }
+
+    /* CATEGORIES */
+    .categories {
+      max-width: 1200px;
+      margin: 10px auto 30px;
+      padding: 0 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .category {
+      background: #1b1b20;
+      color: #ccc;
+      border: 1px solid #303038;
+      padding: 9px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .category.active,
+    .category:hover {
+      background: #ff3d7f;
+      color: white;
+      border-color: #ff3d7f;
+    }
+
+    /* CONTENT */
+    .content {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #17171b;
+      border: 1px solid #29292e;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #ff3d7f;
+    }
+
+    .thumb {
+      height: 190px;
+      background:
+        linear-gradient(135deg, #301529, #15151a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .card-info {
+      padding: 14px;
+    }
+
+    .card-info h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .card-info p {
+      color: #888;
+      font-size: 13px;
+    }
+
+    .view-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 13px;
+      background: #ff3d7f;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #151518;
+      border-top: 1px solid #29292e;
+      padding: 30px 20px;
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .nav {
+        flex-direction: column;
+      }
+
+      nav a {
+        margin: 0 7px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 40px;
+      }
+
+      .hero h1 {
+        font-size: 29px;
+      }
+
+      .age-box {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- AGE VERIFICATION -->
+  <div class="age-overlay" id="ageGate">
+    <div class="age-box">
+
+      <div class="age-icon">🔞</div>
+
+      <h2>Adults Only</h2>
+
+      <p>
+        This website contains content intended only for adults.
+        You must be at least 18 years old to enter.
+      </p>
+
+      <div class="age-buttons">
+        <button class="enter-btn" onclick="enterSite()">
+          I am 18+
+        </button>
+
+        <button class="leave-btn" onclick="leaveSite()">
+          Leave
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav">
+
+      <div class="logo">
+        AdultHub
+      </div>
+
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Categories</a>
+        <a href="#">Latest</a>
+        <a href="#">Contact</a>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <h1>
+      Welcome to <span>AdultHub</span>
+    </h1>
+
+    <p>
+      A private 18+ content platform for verified adults.
+      Browse categories and discover new content.
+    </p>
+
+  </section>
+
+
+  <!-- SEARCH -->
+  <div class="search-area">
+    <input
+      type="text"
+      id="searchInput"
+      class="search"
+      placeholder="Search content..."
+      onkeyup="searchContent()"
+    >
+  </div>
+
+
+  <!-- CATEGORIES -->
+  <div class="categories">
+
+    <button class="category active" onclick="filterContent('all')">
+      All
+    </button>
+
+    <button class="category" onclick="filterContent('latest')">
+      Latest
+    </button>
+
+    <button class="category" onclick="filterContent('popular')">
+      Popular
+    </button>
+
+    <button class="category" onclick="filterContent('featured')">
+      Featured
+    </button>
+
+  </div>
+
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="grid" id="contentGrid">
+
+      <article class="card" data-category="latest">
+
+        <div class="thumb">
+          Preview Image
+        </div>
+
+        <div class="card-info">
+          <h3>Premium Content 01</h3>
+          <p>18+ • Latest</p>
+
+          <a href="#" class="view-btn">
+            View
+          </a>
+        </div>
+
+      </article>
+
+
+      <article class="card" data-category="popular">
+
+        <div class="thumb">
+          Preview Image
+        </div>
+
+        <div class="card-info">
+          <h3>Premium Content 02</h3>
+          <p>18+ • Popular</p>
+
+          <a href="#" class="view-btn">
+            View
+          </a>
+        </div>
+
+      </article>
+
+
+      <article class="card" data-category="featured">
+
+        <div class="thumb">
+          Preview Image
+        </div>
+
+        <div class="card-info">
+          <h3>Featured Content</h3>
+          <p>18+ • Featured</p>
+
+          <a href="#" class="view-btn">
+            View
+          </a>
+        </div>
+
+      </article>
+
+
+      <article class="card" data-category="latest">
+
+        <div class="thumb">
+          Preview Image
+        </div>
+
+        <div class="card-info">
+          <h3>Premium Content 04</h3>
+          <p>18+ • Latest</p>
+
+          <a href="#" class="view-btn">
+            View
+          </a>
+        </div>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <p>
+      © 2026 AdultHub. All rights reserved.
+    </p>
+
+    <br>
+
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="#">18+ Policy</a>
+    <a href="#">Contact</a>
+
+  </footer>
+
+
+  <script>
+
+    /* AGE VERIFICATION */
+
+    function enterSite() {
+      localStorage.setItem("adultVerified", "yes");
+
+      document.getElementById("ageGate").style.display = "none";
+    }
+
+
+    function leaveSite() {
+      window.location.href = "https://www.google.com/";
+    }
+
+
+    /* CHECK AGE */
+
+    window.addEventListener("load", function () {
+
+      if (localStorage.getItem("adultVerified") === "yes") {
+        document.getElementById("ageGate").style.display = "none";
+      }
+
+    });
+
+
+    /* SEARCH */
+
+    function searchContent() {
+
+      let search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+      let cards =
+        document.querySelectorAll(".card");
+
+      cards.forEach(function(card) {
+
+        let title =
+          card.querySelector("h3")
+          .innerText
+          .toLowerCase();
+
+        if (title.includes(search)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+
+      });
+
+    }
+
+
+    /* CATEGORY FILTER */
+
+    function filterContent(category) {
+
+      let cards =
+        document.querySelectorAll(".card");
+
+      cards.forEach(function(card) {
+
+        if (
+          category === "all" ||
+          card.dataset.category === category
+        ) {
+
+          card.style.display = "";
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>
